@@ -3,15 +3,20 @@ CreateTiledGround
 
 The idea is to create some tiled grounds we can easily texture using MultiMaterial of BabylonJS.
 
-### Several possible application :###
+## Several possible applications :##
 
-## Make a board game like chess##
+### Make a board game like chess###
+
 http://kostar111.github.io/TiledGroundBJS/chess/
 
-## Have some fun with invaders ##
+###Have some fun with invaders###
+
 possibility to animate and make some old school game ?
+
 http://kostar111.github.io/TiledGroundBJS/invaders/
 
-## Cartography ##
+###Cartography###
+
 So easy to display openStreetMap tiles
+
 http://kostar111.github.io/TiledGroundBJS/map/
