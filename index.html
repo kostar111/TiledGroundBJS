@@ -35,6 +35,10 @@
         var canvas = document.getElementById("canvas_renderer");
         // Load BABYLON 3D engine
         var engine = new BABYLON.Engine(canvas, true);
+        window.addEventListener(window, "resize", function(){
+            engine.resize();
+        });
+
         // Scene
         var scene = new BABYLON.Scene(engine);
         // Camera
