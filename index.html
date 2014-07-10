@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>CreateGround tests</title>
+    <style>
+       html, body, div, canvas {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+        canvas {
+            display:block;
+        }
+
+    </style>
+    <!-- JQuery-->
+    <script src="../lib/jquery-1.10.2.js"></script>
+    
+    <!-- BABYLON-->
+    <script src="../lib/babylon.1.12.js"></script>
+    <script src="createTiledGround.js"></script>
+
+</head>
+
+ <body>
+    <div id="rootDiv">
+        <canvas id="canvas_renderer"></canvas>
+    </div>
+
+    <script>
+    $(function() {
+        // Get the Canvas element from our HTML below
+        var canvas = document.getElementById("canvas_renderer");
+        // Load BABYLON 3D engine
+        var engine = new BABYLON.Engine(canvas, true);
+        // Scene
+        var scene = new BABYLON.Scene(engine);
+        // Camera
+        var camera = init_camera(scene);
+        
+        camera.attachControl(canvas);
+        // Light
+        var light = new BABYLON.HemisphericLight("Hemi0", new BABYLON.Vector3(200, 200, 0), scene);
+        ////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////
+
+        // Creation of tileGround
+        var xmin = -3;
+        var zmin = -3;
+        var xmax = 3;
+        var zmax = 3;
+        var precision = {
+            "w" : 2,
+            "h" : 2
+        };
+        var subdivisions = {
+            'h' : 8,
+            'w' : 8
+        };
+        var vData = createTiledGround(xmin, zmin, xmax, zmax, precision, subdivisions);
+        var ground = new BABYLON.Mesh("ground", scene);
+        vData.applyToMesh(ground);
+
+        // Create Multi Material
+        var whiteMaterial = new BABYLON.StandardMaterial("White", scene);
+        whiteMaterial.diffuseColor = new BABYLON.Color3(1, 1, 1);
+        //~ whiteMaterial.wireframe = true;
+
+        var blackMaterial = new BABYLON.StandardMaterial("Black", scene);
+        blackMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
+        //~ blackMaterial.wireframe = true;
+
+        var multimat = new BABYLON.MultiMaterial("multi", scene);
+        multimat.subMaterials.push(whiteMaterial);
+        multimat.subMaterials.push(blackMaterial);
+        ground.material = multimat;
+
+        // Apply Multi Material
+        ground.subMeshes = [];
+        var verticesCount = ground.getTotalVertices();
+
+        var tileIndicesLength = 6 * precision.w * precision.h;
+        var base = 0;
+        for (var row = 0; row < subdivisions.h; row++) {
+            for (var col = 0; col < subdivisions.w; col++) {
+                ground.subMeshes.push(new BABYLON.SubMesh(row%2 ^ col%2, 0, verticesCount, base , tileIndicesLength, ground));
+                base += tileIndicesLength;
+            }
+        }
+        ////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////
+        // Once the scene is loaded, just register a render loop to render it
+        engine.runRenderLoop(function () {
+            scene.render();
+        });
+    });
+    </script>
+ </body>
+ 
+ <script>
+    function init_camera(scene){
+        var camera  = new BABYLON.ArcRotateCamera("Camera", 0, Math.PI/3, 10, BABYLON.Vector3.Zero(), scene);
+        camera.checkCollisions = true;
+        camera.maxZ = 10000;
+        camera.speed = 5;
+        camera.wheelPrecision = 20;
+        camera.lowerRadiusLimit = 1;
+        camera.keysUp = [90]; // Touche Z
+        camera.keysDown = [83]; // Touche S
+        camera.keysLeft = [81]; // Touche Q
+        camera.keysRight = [68]; // Touche D
+        return camera;
+    }
+ </script>
+
+
+ 
+ 
+ 
+</html>
