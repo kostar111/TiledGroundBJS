@@ -64,22 +64,32 @@
             'w' : 8
         };
         var vData = createTiledGround(xmin, zmin, xmax, zmax, precision, subdivisions);
-        var ground = new BABYLON.Mesh("ground", scene);
+        var ground = new BABYLON.Mesh("Ground", scene);
+        var grid = new BABYLON.Mesh("Grid", scene);
         vData.applyToMesh(ground);
+        vData.applyToMesh(grid);
 
         // Create Multi Material
-        var whiteMaterial = new BABYLON.StandardMaterial("White", scene);
+        var whiteMaterial = new BABYLON.StandardMaterial("White Material", scene);
         whiteMaterial.diffuseColor = new BABYLON.Color3(1, 1, 1);
         //~ whiteMaterial.wireframe = true;
 
-        var blackMaterial = new BABYLON.StandardMaterial("Black", scene);
+        var blackMaterial = new BABYLON.StandardMaterial("Black Material", scene);
         blackMaterial.diffuseColor = new BABYLON.Color3(0, 0, 0);
         //~ blackMaterial.wireframe = true;
+        
+        var gridMaterial = new BABYLON.StandardMaterial("Grid Material", scene);
+        gridMaterial.diffuseColor = new BABYLON.Color3(1, 0, 0);
+        gridMaterial.wireframe = true;
 
-        var multimat = new BABYLON.MultiMaterial("multi", scene);
+        var multimat = new BABYLON.MultiMaterial("Multi Material", scene);
         multimat.subMaterials.push(whiteMaterial);
         multimat.subMaterials.push(blackMaterial);
+
         ground.material = multimat;
+        grid.material = gridMaterial;
+        console.log(vData.positions);
+        console.log(vData.indices);
 
         // Apply Multi Material
         ground.subMeshes = [];
@@ -105,7 +115,7 @@
  
  <script>
     function init_camera(scene){
-        var camera  = new BABYLON.ArcRotateCamera("Camera", 0, Math.PI/3, 10, BABYLON.Vector3.Zero(), scene);
+        var camera  = new BABYLON.ArcRotateCamera("Camera", -Math.PI/2, Math.PI/3, 10, BABYLON.Vector3.Zero(), scene);
         camera.checkCollisions = true;
         camera.maxZ = 10000;
         camera.speed = 5;
