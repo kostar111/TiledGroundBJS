@@ -15,7 +15,7 @@ var createTiledGround = function (xmin, zmin, xmax, zmax, precision, subdivision
         'h' : (subdivisions.h * precision.h),
     };
 
-    // Position & normals
+    // Position normals & uvs
     var position = new BABYLON.Vector3.Zero();
     var normal = new BABYLON.Vector3(0, 1.0, 0);
     for (row = 0; row <= totalSubdiv.h; row++) {
@@ -26,20 +26,21 @@ var createTiledGround = function (xmin, zmin, xmax, zmax, precision, subdivision
 
             positions.push(position.x, position.y, position.z);
             normals.push(normal.x, normal.y, normal.z);
+            uvs.push(col / precision.w, row / precision.h);
         }
     }
 
-    // Indices & uvs
+    // Indices
     var rowLength = totalSubdiv.w + 1;
     for (tileRow = 0; tileRow < subdivisions.h; tileRow++) {
         for (tileCol = 0; tileCol < subdivisions.w; tileCol++) {
             for (row = 0; row < precision.h; row++) {
                 for (col = 0; col < precision.w; col++) {
                     var square = [
-                        col + row * rowLength + tileCol * precision.w + tileRow * rowLength * 2,
-                        (col + 1) + row * rowLength + tileCol * precision.w + tileRow * rowLength * 2 ,
-                        (col + 1) + (row + 1) * rowLength + tileCol * precision.w + tileRow * rowLength * 2,
-                        col + (row + 1) * rowLength + tileCol * precision.w + tileRow * rowLength * 2
+                        col + row * rowLength + tileCol * precision.w + tileRow * rowLength * precision.h,
+                        (col + 1) + row * rowLength + tileCol * precision.w + tileRow * rowLength * precision.h ,
+                        (col + 1) + (row + 1) * rowLength + tileCol * precision.w + tileRow * rowLength * precision.h,
+                        col + (row + 1) * rowLength + tileCol * precision.w + tileRow * rowLength * precision.h
                     ];
 
                     indices.push(square[1]);
@@ -48,13 +49,10 @@ var createTiledGround = function (xmin, zmin, xmax, zmax, precision, subdivision
                     indices.push(square[0]);
                     indices.push(square[1]);
                     indices.push(square[3]);
-
-                    uvs.push(col / precision.w, row / precision.h);
                 }
             }
         }
     }
-
 
     // Result
     var vertexData = new BABYLON.VertexData();
