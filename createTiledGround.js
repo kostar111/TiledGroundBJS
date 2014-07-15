@@ -24,7 +24,7 @@ var createTiledGround = function (xmin, zmin, xmax, zmax, precision, subdivision
 
             positions.push(position.x, position.y, position.z);
             normals.push(normal.x, normal.y, normal.z);
-            uvs.push(col / precision.w, row / precision.h);
+            uvs.push((col / precision.w) % 1, (row / precision.h) % 1);
         }
     }
 
