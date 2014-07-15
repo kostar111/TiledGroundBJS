@@ -5,10 +5,8 @@ var createTiledGround = function (xmin, zmin, xmax, zmax, precision, subdivision
     var uvs = [];
     var row, col, tileRow, tileCol;
 
-    subdivisions.h = subdivisions.h || 1;
-    subdivisions.w = subdivisions.w || 1;
-    precision.h = precision.h || 1;
-    precision.w = precision.w || 1;
+    subdivisions = subdivisions || {'w' : 1, 'h' : 1};
+    precision    = precision    || {'w' : 1, 'h' : 1};
 
     var totalSubdiv = {
         'w' : (subdivisions.w * precision.w),
