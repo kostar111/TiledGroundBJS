@@ -56,8 +56,8 @@
         var xmax = 10;
         var zmax = 10;
         var precision = {
-            "w" : 1,
-            "h" : 1
+            "w" : 3,
+            "h" : 3
         };
         var subdivisions = {
             'h' : 10,
@@ -65,7 +65,9 @@
         };
         var vData = createTiledGround(xmin, zmin, xmax, zmax, precision, subdivisions);
         var ground = new BABYLON.Mesh("ground", scene);
+        //~ var grid = new BABYLON.Mesh("Grid", scene);
         vData.applyToMesh(ground);
+        //~ vData.applyToMesh(grid);
 
         // Create Multi Material
         var zoom = 12;
@@ -83,13 +85,21 @@
                     "http://b.tile.openstreetmap.org/" + zoom + "/" + (xTileBase + col) + "/" + (yTileBase - row) + ".png",
                     scene
                 );
+                material.diffuseTexture.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;
+                material.diffuseTexture.wrapV = BABYLON.Texture.CLAMP_ADDRESSMODE;
                 material.specularColor = new BABYLON.Color4(0, 0, 0, 0);
+                material.backFaceCulling = false;
                 multimat.subMaterials.push(material);
             }
         }
-        
+
         //http://b.tile.openstreetmap.org/12/2123/1500.png
         ground.material = multimat;
+
+        var gridMaterial = new BABYLON.StandardMaterial("Grid Material", scene);
+        gridMaterial.diffuseColor = new BABYLON.Color3(1, 0, 0);
+        gridMaterial.wireframe = true;
+        //~ grid.material = gridMaterial;
 
         // Apply Multi Material
         ground.subMeshes = [];
@@ -100,7 +110,10 @@
         var index = 0;
         for (var row = 0; row < subdivisions.h; row++) {
             for (var col = 0; col < subdivisions.w; col++) {
-                ground.subMeshes.push(new BABYLON.SubMesh(index++, 0, verticesCount, base , tileIndicesLength, ground));
+                var submesh = new BABYLON.SubMesh(
+                    index++, 0, verticesCount, base , tileIndicesLength, ground
+                );
+                ground.subMeshes.push(submesh);
                 base += tileIndicesLength;
             }
         }
