@@ -64,6 +64,7 @@ var createTiledGround = function (xmin, zmin, xmax, zmax, precision, subdivision
         }
     }
 
+    console.log(uvs);
     // Result
     var vertexData = new BABYLON.VertexData();
 
