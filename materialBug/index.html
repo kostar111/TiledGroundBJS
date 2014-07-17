@@ -50,25 +50,24 @@
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
 
-        var ground = new BABYLON.Mesh.CreatePlane("ground", 1, scene);
-        ground.rotation.x = Math.PI/2;
+		var ground = new BABYLON.Mesh.CreateGround("ground",10, 10, 2, scene);
+		// ground.rotation.x = Math.PI/2;
 
-        // Create Multi Material
-        var zoom = 12;
-        var xTileBase = 2120;
-        var yTileBase = 1498;
-        
-        var material1 = new BABYLON.StandardMaterial(
-            "material1",
-            scene
-        );
-        material1.diffuseTexture = new BABYLON.Texture(
-            "texture.png",
-            scene
-        );
-        
-        ground.material = material1;
+		var material1 = new BABYLON.StandardMaterial(
+		    "material1",
+		    scene
+		);
+		material1.diffuseTexture = new BABYLON.Texture(
+		    "texture.png",
+		    scene
+		);
+		material1.diffuseTexture.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;
+        material1.diffuseTexture.wrapV = BABYLON.Texture.CLAMP_ADDRESSMODE;
+		ground.material = material1;
 
+		var vertexData = BABYLON.VertexData.ExtractFromMesh(ground);
+		console.log(vertexData);
+        console.log(ground.getVerticesData(BABYLON.VertexBuffer.UVKind));
         ////////////////////////////////////////////////////////////////////////
         ////////////////////////////////////////////////////////////////////////
         // Once the scene is loaded, just register a render loop to render it
