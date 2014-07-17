@@ -110,7 +110,10 @@
         var index = 0;
         for (var row = 0; row < subdivisions.h; row++) {
             for (var col = 0; col < subdivisions.w; col++) {
-                ground.subMeshes.push(new BABYLON.SubMesh(index++, 0, verticesCount, base , tileIndicesLength, ground));
+                var submesh = new BABYLON.SubMesh(
+                    index++, 0, verticesCount, base , tileIndicesLength, ground
+                );
+                ground.subMeshes.push(submesh);
                 base += tileIndicesLength;
             }
         }

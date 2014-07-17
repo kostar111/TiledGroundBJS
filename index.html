@@ -60,8 +60,8 @@
             "h" : 2
         };
         var subdivisions = {
-            'h' : 2,
-            'w' : 2
+            'h' : 8,
+            'w' : 8
         };
         var vData = createTiledGround(xmin, zmin, xmax, zmax, precision, subdivisions);
         var ground = new BABYLON.Mesh("Ground", scene);
@@ -88,6 +88,8 @@
 
         ground.material = multimat;
         grid.material = gridMaterial;
+        console.log(vData.positions);
+        console.log(vData.indices);
 
         // Apply Multi Material
         ground.subMeshes = [];
