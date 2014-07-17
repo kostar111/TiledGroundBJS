@@ -85,27 +85,16 @@
                     "http://b.tile.openstreetmap.org/" + zoom + "/" + (xTileBase + col) + "/" + (yTileBase - row) + ".png",
                     scene
                 );
-                //~ material.diffuseTexture.wrapU = BABYLON.Texture.CLAMP_ADRESSMODE;
-                //~ material.diffuseTexture.wrapV = BABYLON.Texture.CLAMP_ADRESSMODE;
+                material.diffuseTexture.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;
+                material.diffuseTexture.wrapV = BABYLON.Texture.CLAMP_ADDRESSMODE;
                 material.specularColor = new BABYLON.Color4(0, 0, 0, 0);
                 material.backFaceCulling = false;
                 multimat.subMaterials.push(material);
             }
         }
-        
-        
-        console.log(multimat);
-        
+
         //http://b.tile.openstreetmap.org/12/2123/1500.png
         ground.material = multimat;
-        console.log(ground.material);
-        for (var it in ground.material.subMaterials) {
-            console.log("salut");
-            console.log(ground.material.subMaterials[it].diffuseTexture.wrapU);
-            ground.material.subMaterials[it].diffuseTexture.wrapU = BABYLON.Texture.CLAMP_ADDRESSMODE;
-            console.log(ground.material.subMaterials[it].diffuseTexture.wrapU);
-            ground.material.subMaterials[it].diffuseTexture.wrapV = BABYLON.Texture.CLAMP_ADDRESSMODE;
-        }
 
         var gridMaterial = new BABYLON.StandardMaterial("Grid Material", scene);
         gridMaterial.diffuseColor = new BABYLON.Color3(1, 0, 0);
